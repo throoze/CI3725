@@ -1,10 +1,16 @@
 CI3725 - Traductores e Interpretadores - USB
 
-==================================================================================
+===============================================================================
 Proyecto: Vectorinox
-Autores: Victor De Ponte, 05-38087
-	 Isaac López,     07-41120
-==================================================================================
+Autores:  Victor De Ponte, 05-38087
+	  Isaac López,     07-41120
+===============================================================================
 
 
-Implementación de un compilador para el lenguaje Vectorinox, definido en el curso.
+Implementación de un compilador para el lenguaje Vectorinox, definido en el 
+curso.
+
+Ver la documentación del lenguaje en el archivo definición.pdf
+
+El enunciado de cada entrega estará en un archivo .pdf en el subdirectorio co-
+rrespondiente.
