@@ -1,16 +1,19 @@
 {
 module Tokens_posn (Token(..), AlexPosn(..), alexScanTokens, token_posn) where
+import Tokens
 }
+
+
 
 %wrapper "posn"
 
-$digit = 0-9			-- digits
-$alpha = [a-zA-Z]		-- alphabetic characters
-$alphanum = [a-zA-Z0-9]         -- alphanumeric characters
+$digit = 0-9			-- dígitos
+$alpha = [a-zA-Z]		-- caracteres alfabéticos
+$alphanum = [a-zA-Z0-9] -- caracteres alfanuméricos
 
 tokens :-
 
-  $white+\"[\n.#\"\\\"]*\" { \p s -> TkStr p s}
+  $white+((\"[\n.#\"\\\"]*\") | (\'[\n.#\'\\\']*\'))     { \p s -> TkStr p s}
   $white+                                                ;
   \#.*                                                   ;
   begin                                                  { \p s -> TkBegin p }
@@ -58,7 +61,6 @@ tokens :-
   \>                                                     { \p s -> TkGT p }
   \!                                                     { \p s -> TkNot p }
   \:                                                     { \p s -> TkColon p }
-  \.                                                     { \p s -> TkPoint p }
   \[                                                     { \p s -> TkLSqBkt p }
   \]                                                     { \p s -> TkRSqBkt p }
   \$                                                     { \p s -> TkDollar p }
@@ -68,86 +70,18 @@ tokens :-
   \|\|                                                   { \p s -> TkOr p }
   \0                                                     { \p s -> TkEOF p }
   
-  $digit*.?$digit*                                       { \p s -> TkNum p s }
+  ($digit+.?$digit*)|($digit*.?$digit+)                  { \p s -> TkNum p s }
+  \.                                                     { \p s -> TkPoint p }
   $alpha[$alphanum _]*                                   { \p s -> TkId  p s }
 
 {
--- Each right-hand side has type :: AlexPosn -> String -> Token
-
--- Some action helpers:
-tok f p s = f p s
-
-{- El tipo de datos @Token@ modela los diferentes /token/ que se pueden
-   encontrar en el lenguaje Vectorinox.
--}
-data Token = 
-  -- Palabras Reservadas del Lenguaje
-  TkNumT    AlexPosn         |
-  TkVec     AlexPosn         |
-  TkMat     AlexPosn         |
-  TkZeroes  AlexPosn         |
-  TkRange   AlexPosn         |
-  TkEye     AlexPosn         |
-  TkDefine  AlexPosn         |
-  TkOf      AlexPosn         |
-  TkType    AlexPosn         |
-  TkAs      AlexPosn         |
-  TkBegin   AlexPosn         |
-  TkEnd     AlexPosn         |
-  TkVars    AlexPosn         |
-  TkIf      AlexPosn         |
-  TkThen    AlexPosn         |
-  TkElse    AlexPosn         |
-  TkWhile   AlexPosn         |
-  TkDo      AlexPosn         |
-  TkRead    AlexPosn         |
-  TkWrite   AlexPosn         |
-  TkReturn  AlexPosn         |
-  TkTrue    AlexPosn         |
-  TkFalse   AlexPosn         |
-  TkForeach AlexPosn         |
-  TkIn      AlexPosn         |
-  
-  -- Operadores y otros elementos sintácticos  
-  TkComma   AlexPosn         |
-  TkSColon  AlexPosn         |
-  TkLBrace  AlexPosn         |
-  TkRBrace  AlexPosn         |
-  TkLBkt    AlexPosn         |
-  TkRBkt    AlexPosn         |
-  TkPlus    AlexPosn         |
-  TkMinus   AlexPosn         |
-  TkTimes   AlexPosn         |
-  TkDiv     AlexPosn         |
-  TkMod     AlexPosn         |
-  TkPower   AlexPosn         |
-  TkLT      AlexPosn         |
-  TkGT      AlexPosn         |
-  TkLEqT    AlexPosn         |
-  TkGEqT    AlexPosn         |
-  TkNEqT    AlexPosn         |
-  TkPoint   AlexPosn         |
-  TkLSqBkt  AlexPosn         |
-  TkRSqBkt  AlexPosn         |
-  TkDollar  AlexPosn         |
-  TkAt      AlexPosn         |
-  TkApos    AlexPosn         |
-  TkColon   AlexPosn         |
-  TkAnd     AlexPosn         |
-  TkOr      AlexPosn         |
-  TkNot     AlexPosn         |
-  TkAsign   AlexPosn         |
-  TkEOF     AlexPosn         |
-  
-  --Tokens peligrosos
-  TkId      AlexPosn String  |
-  TkNum     AlexPosn Num     |
-  TkStr     AlexPosn String  |
-  deriving(Eq,Show)
-
+-- Cada una de las funciones a la derecha tiene el tipo :: AlexPosn -> String -> Token
+{-
 token_posn (Let p) = p
 token_posn (In p) = p
 token_posn (Sym p _) = p
 token_posn (Var p _) = p
 token_posn (Int p _) = p
+-}
+
 }
