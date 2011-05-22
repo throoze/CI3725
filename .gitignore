@@ -4,4 +4,4 @@
 .gitignore
 *Tokens_posn.x
 *Tokens_posn.hs
-src/Lexer.hs
+*Lexer.hs
