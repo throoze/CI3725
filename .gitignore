@@ -2,6 +2,6 @@
 *~*
 *#*
 .gitignore
-Tokens_posn.x
-Tokens_posn.hs
-
+*Tokens_posn.x
+*Tokens_posn.hs
+src/Lexer.hs
