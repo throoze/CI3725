@@ -1,3 +1,6 @@
 .git
 *~*
 *#*
+.gitignore
+Tokens_posn.x
+Tokens_posn.hs
