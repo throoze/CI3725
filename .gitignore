@@ -5,3 +5,7 @@
 *Tokens_posn.x
 *Tokens_posn.hs
 *Lexer.hs
+*.hi
+*.o
+*.out
+hola
