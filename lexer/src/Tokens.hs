@@ -38,65 +38,66 @@ module Tokens (
 -}
 data Token = 
   -- Palabras Reservadas del Lenguaje
-  TkNumT    AlexPosn         |
-  TkVec     AlexPosn         |
-  TkMat     AlexPosn         |
-  TkZeroes  AlexPosn         |
-  TkRange   AlexPosn         |
-  TkEye     AlexPosn         |
-  TkDefine  AlexPosn         |
-  TkOf      AlexPosn         |
-  TkType    AlexPosn         |
-  TkAs      AlexPosn         |
-  TkBegin   AlexPosn         |
-  TkEnd     AlexPosn         |
-  TkVars    AlexPosn         |
-  TkIf      AlexPosn         |
-  TkThen    AlexPosn         |
-  TkElse    AlexPosn         |
-  TkWhile   AlexPosn         |
-  TkDo      AlexPosn         |
-  TkRead    AlexPosn         |
-  TkWrite   AlexPosn         |
-  TkReturn  AlexPosn         |
-  TkTrue    AlexPosn         |
-  TkFalse   AlexPosn         |
-  TkForeach AlexPosn         |
-  TkIn      AlexPosn         |
+  TkNumT    (Int,Int)        |
+  TkVec     (Int,Int)        |
+  TkMat     (Int,Int)        |
+  TkZeroes  (Int,Int)        |
+  TkRange   (Int,Int)        |
+  TkEye     (Int,Int)        |
+  TkDefine  (Int,Int)        |
+  TkOf      (Int,Int)        |
+  TkType    (Int,Int)        |
+  TkAs      (Int,Int)        |
+  TkBegin   (Int,Int)        |
+  TkEnd     (Int,Int)        |
+  TkVars    (Int,Int)        |
+  TkIf      (Int,Int)        |
+  TkThen    (Int,Int)        |
+  TkElse    (Int,Int)        |
+  TkWhile   (Int,Int)        |
+  TkDo      (Int,Int)        |
+  TkRead    (Int,Int)        |
+  TkWrite   (Int,Int)        |
+  TkReturn  (Int,Int)        |
+  TkTrue    (Int,Int)        |
+  TkFalse   (Int,Int)        |
+  TkForeach (Int,Int)        |
+  TkIn      (Int,Int)        |
   
   -- Operadores y otros elementos sintácticos  
-  TkComma   AlexPosn         |
-  TkSColon  AlexPosn         |
-  TkLBrace  AlexPosn         |
-  TkRBrace  AlexPosn         |
-  TkLBkt    AlexPosn         |
-  TkRBkt    AlexPosn         |
-  TkPlus    AlexPosn         |
-  TkMinus   AlexPosn         |
-  TkTimes   AlexPosn         |
-  TkDiv     AlexPosn         |
-  TkMod     AlexPosn         |
-  TkPower   AlexPosn         |
-  TkLT      AlexPosn         |
-  TkGT      AlexPosn         |
-  TkLEqT    AlexPosn         |
-  TkGEqT    AlexPosn         |
-  TkNEqT    AlexPosn         |
-  TkPoint   AlexPosn         |
-  TkLSqBkt  AlexPosn         |
-  TkRSqBkt  AlexPosn         |
-  TkDollar  AlexPosn         |
-  TkAt      AlexPosn         |
-  TkApos    AlexPosn         |
-  TkColon   AlexPosn         |
-  TkAnd     AlexPosn         |
-  TkOr      AlexPosn         |
-  TkNot     AlexPosn         |
-  TkAsign   AlexPosn         |
-  TkEOF     AlexPosn         |
+  TkComma   (Int,Int)        |
+  TkSColon  (Int,Int)        |
+  TkLBrace  (Int,Int)        |
+  TkRBrace  (Int,Int)        |
+  TkLBkt    (Int,Int)        |
+  TkRBkt    (Int,Int)        |
+  TkPlus    (Int,Int)        |
+  TkMinus   (Int,Int)        |
+  TkTimes   (Int,Int)        |
+  TkDiv     (Int,Int)        |
+  TkMod     (Int,Int)        |
+  TkPower   (Int,Int)        |
+  TkLT      (Int,Int)        |
+  TkGT      (Int,Int)        |
+  TkLEqT    (Int,Int)        |
+  TkGEqT    (Int,Int)        |
+  TkNEqT    (Int,Int)        |
+  TkPoint   (Int,Int)        |
+  TkLSqBkt  (Int,Int)        |
+  TkRSqBkt  (Int,Int)        |
+  TkDollar  (Int,Int)        |
+  TkAt      (Int,Int)        |
+  TkApos    (Int,Int)        |
+  TkColon   (Int,Int)        |
+  TkAnd     (Int,Int)        |
+  TkOr      (Int,Int)        |
+  TkNot     (Int,Int)        |
+  TkAsign   (Int,Int)        |
+  TkEOF     (Int,Int)        |
   
   --Tokens peligrosos
-  TkId      AlexPosn String  |
-  TkNum     AlexPosn Num     |
-  TkStr     AlexPosn String  |
+  TkId      (Int,Int) String |
+  TkNum     (Int,Int) Float  |
+  TkStr     (Int,Int) String
   deriving(Eq,Show)
+
