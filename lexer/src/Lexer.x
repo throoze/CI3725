@@ -12,69 +12,70 @@ $alphanum = [a-zA-Z0-9] -- caracteres alfanuméricos
 
 tokens :-
 
-  $white+((\"[\n.#\"\\\"]*\") | (\'[\n.#\'\\\']*\'))     { \p s -> TkStr getPos p s}
+  $white+((\"[\n.#\"\\\"]*\") | (\'[\n.#\'\\\']*\'))     { \p s -> TkStr (getPos p) s}
   $white+                                                ;
   \#.*                                                   ;
-  begin                                                  { \p s -> TkBegin getPos p }
-  in                                                     { \p s -> TkIn getPos p }
-  num                                                    { \p s -> TkNumT getPos p }
-  vec                                                    { \p s -> TkVec getPos p }
-  mat                                                    { \p s -> TkMat getPos p }
-  zeroes                                                 { \p s -> TkZeroes getPos p }
-  range                                                  { \p s -> TkRange getPos p }
-  eye                                                    { \p s -> TkEye getPos p }
-  define                                                 { \p s -> TkDefine getPos p }
-  of                                                     { \p s -> TkOf getPos p }
-  type                                                   { \p s -> TkType getPos p }
-  as                                                     { \p s -> TkAs getPos p }
-  end                                                    { \p s -> TkEnd getPos p }
-  vars                                                   { \p s -> TkVars getPos p }
-  if                                                     { \p s -> TkIf getPos p }
-  then                                                   { \p s -> TkThen getPos p }
-  else                                                   { \p s -> TkElse getPos p }
-  while                                                  { \p s -> TkWhile getPos p }
-  do                                                     { \p s -> TkDo getPos p }
-  read                                                   { \p s -> TkRead getPos p }
-  write                                                  { \p s -> TkWrite getPos p }
-  return                                                 { \p s -> TkReturn getPos p }
-  ([Tt]rue)|(TRUE)                                       { \p s -> TkTrue getPos p }
-  ([Ff]alse)|(FALSE)                                     { \p s -> TkFalse getPos p }
-  foreach                                                { \p s -> TkForeach getPos p }
+  begin                                                  { \p s -> TkBegin (getPos p) }
+  in                                                     { \p s -> TkIn (getPos p) }
+  num                                                    { \p s -> TkNumT (getPos p) }
+  vec                                                    { \p s -> TkVec (getPos p) }
+  mat                                                    { \p s -> TkMat (getPos p) }
+  zeroes                                                 { \p s -> TkZeroes (getPos p) }
+  range                                                  { \p s -> TkRange (getPos p) }
+  eye                                                    { \p s -> TkEye (getPos p) }
+  define                                                 { \p s -> TkDefine (getPos p) }
+  of                                                     { \p s -> TkOf (getPos p) }
+  type                                                   { \p s -> TkType (getPos p) }
+  as                                                     { \p s -> TkAs (getPos p) }
+  end                                                    { \p s -> TkEnd (getPos p) }
+  vars                                                   { \p s -> TkVars (getPos p) }
+  if                                                     { \p s -> TkIf (getPos p) }
+  then                                                   { \p s -> TkThen (getPos p) }
+  else                                                   { \p s -> TkElse (getPos p) }
+  while                                                  { \p s -> TkWhile (getPos p) }
+  do                                                     { \p s -> TkDo (getPos p) }
+  read                                                   { \p s -> TkRead (getPos p) }
+  write                                                  { \p s -> TkWrite (getPos p) }
+  return                                                 { \p s -> TkReturn (getPos p) }
+  ([Tt]rue)|(TRUE)                                       { \p s -> TkTrue (getPos p) }
+  ([Ff]alse)|(FALSE)                                     { \p s -> TkFalse (getPos p) }
+  foreach                                                { \p s -> TkForeach (getPos p) }
   
-  \,                                                     { \p s -> TkComma getPos p }
-  \{                                                     { \p s -> TkLBrace getPos p }
-  \}                                                     { \p s -> TkRBrace getPos p }
-  \(                                                     { \p s -> TkLBkt getPos p }
-  \)                                                     { \p s -> TkRBkt getPos p }
-  \+                                                     { \p s -> TkPlus getPos p }  
-  \-                                                     { \p s -> TkMinus getPos p }
-  \*\*                                                   { \p s -> TkPower getPos p }
-  \*                                                     { \p s -> TkTimes getPos p }
-  \/                                                     { \p s -> TkDiv getPos p }
-  \%                                                     { \p s -> TkMod getPos p }
-  \!\=                                                   { \p s -> TkNEqT getPos p }
-  :=                                                     { \p s -> TkAsign getPos p }
-  \<\=                                                   { \p s -> TkLEqT getPos p }
-  \>\=                                                   { \p s -> TkGEqT getPos p }
-  \<                                                     { \p s -> TkLT getPos p }
-  \>                                                     { \p s -> TkGT getPos p }
-  \!                                                     { \p s -> TkNot getPos p }
-  \:                                                     { \p s -> TkColon getPos p }
-  \[                                                     { \p s -> TkLSqBkt getPos p }
-  \]                                                     { \p s -> TkRSqBkt getPos p }
-  \$                                                     { \p s -> TkDollar getPos p }
-  \@                                                     { \p s -> TkAt getPos p }
-  \'                                                     { \p s -> TkApos getPos p }
-  \&|&                                                   { \p s -> TkAnd getPos p }
-  \|\|                                                   { \p s -> TkOr getPos p }
+  \,                                                     { \p s -> TkComma (getPos p) }
+  \{                                                     { \p s -> TkLBrace (getPos p) }
+  \}                                                     { \p s -> TkRBrace (getPos p) }
+  \(                                                     { \p s -> TkLBkt (getPos p) }
+  \)                                                     { \p s -> TkRBkt (getPos p) }
+  \+                                                     { \p s -> TkPlus (getPos p) }  
+  \-                                                     { \p s -> TkMinus (getPos p) }
+  \*\*                                                   { \p s -> TkPower (getPos p) }
+  \*                                                     { \p s -> TkTimes (getPos p) }
+  \/                                                     { \p s -> TkDiv (getPos p) }
+  \%                                                     { \p s -> TkMod (getPos p) }
+  \!\=                                                   { \p s -> TkNEqT (getPos p) }
+  :=                                                     { \p s -> TkAsign (getPos p) }
+  \<\=                                                   { \p s -> TkLEqT (getPos p) }
+  \>\=                                                   { \p s -> TkGEqT (getPos p) }
+  \<                                                     { \p s -> TkLT (getPos p) }
+  \>                                                     { \p s -> TkGT (getPos p) }
+  \!                                                     { \p s -> TkNot (getPos p) }
+  \:                                                     { \p s -> TkColon (getPos p) }
+  \[                                                     { \p s -> TkLSqBkt (getPos p) }
+  \]                                                     { \p s -> TkRSqBkt (getPos p) }
+  \$                                                     { \p s -> TkDollar (getPos p) }
+  \@                                                     { \p s -> TkAt (getPos p) }
+  \'                                                     { \p s -> TkApos (getPos p) }
+  \&|&                                                   { \p s -> TkAnd (getPos p) }
+  \|\|                                                   { \p s -> TkOr (getPos p) }
   
-  ($digit+.?$digit*)|($digit*.?$digit+)                  { \p s -> TkNum getPos p s }
-  \.                                                     { \p s -> TkPoint getPos p }
-  $alpha[$alphanum _]*                                   { \p s -> TkId getPos p s }
+  ($digit+.?$digit*)|($digit*.?$digit+)                  { \p s -> TkNum (getPos p) s }
+  \.                                                     { \p s -> TkPoint (getPos p) }
+  $alpha[$alphanum _]*                                   { \p s -> TkId (getPos p) s }
 
 {
 {- Cada una de las funciones a la derecha tiene el 
-   tipo :: AlexPosn -> String -> Token-}
+   tipo :: AlexPosn -> String -> Token 
+-}
 
 
 {- La función @getPos@ se encarga de extraer la posición donde se encontró el 
@@ -94,9 +95,9 @@ alexScanner str = go (alexStartPos,'\n',str)
     go inp@(pos,_,str) =
        case alexScan inp 0 of
            AlexEOF                -> ([], "")
-           AlexError inp'         -> concat ([], "\nCaracter no esperado '" ++ head str : "' encontrado en linea " ++ show (fst (getPos pos)) ++ ", columna " ++ show (snd (getPos pos)) ++ ".\n") (go (alexMove pos (head str), head str, tail str))
-           AlexSkip  inp' len     -> concat ([], "") (go inp')
-           AlexToken inp' len act -> concat ([act pos (take len str)], "") (go inp')
+           AlexError inp'         -> concat' ([], "\nCaracter no esperado '" ++ head str : "' encontrado en linea " ++ show (fst (getPos pos)) ++ ", columna " ++ show (snd (getPos pos)) ++ ".\n") (go (alexMove pos (head str), head str, tail str))
+           AlexSkip  inp' len     -> concat' ([], "") (go inp')
+           AlexToken inp' len act -> concat' ([act pos (take len str)], "") (go inp')
 
 {-|
     La función @yylex@ facilita el uso del analizador lexicográfico en un 
@@ -107,7 +108,7 @@ alexScanner str = go (alexStartPos,'\n',str)
 -}
 yylex :: String  -- ^ @String@ @s@ a procesar
       -> [Token] -- ^ Lista de /tokens/ del tipo @Token@ o lista de errores.
-lexer s = do
+yylex s = do
      case null ( snd ( alexScanner s)) of
         True  -> fst ( alexScanner s)
         False -> error  (snd ( alexScanner s))
@@ -115,9 +116,9 @@ lexer s = do
 {-| 
     La función @concatenar@ concatena dos tuplas @A@ y @B@ elemento a elemento.
 -}
-concat :: ([x],[y])  -- ^ Tupla @A@ a concatenar
+concat' :: ([x],[y])  -- ^ Tupla @A@ a concatenar
 	   -> ([x],[y])  -- ^ Tupla @B@ a concatenar
 	   -> ([x],[y])	 -- ^ Tupla resultante de la concatenación
-concat a b = (fst a ++ fst b, snd a ++ snd b)
+concat' a b = (fst a ++ fst b, snd a ++ snd b)
 
 }
