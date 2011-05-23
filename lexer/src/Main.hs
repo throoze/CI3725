@@ -24,4 +24,7 @@ main = do
   
 analize [] = putStrLn "Empty file or input. There were no Tokens nor errors procesed"
 analize s = do
-  putStrLn (yylex s)
+  putStrLn printing (yylex s) ""
+
+printing [] y =  putStrln y
+printing x:xs y = printing xs y:x
