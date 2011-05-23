@@ -27,7 +27,7 @@ module Tokens (
 
    El tipo de datos @Token@ se declara derivando de @Show@ para que
    se pueda probar el Analizador Lexicográfico individualmente, puesto
-   que al invocar la función @lexer@ la lista producida será presentada
+   que al invocar la función @yylex@ la lista producida será presentada
    directamente en pantalla.
 
    El tipo de datos @Token@ Se declara derivando de @Eq@ para facilitar el uso de
