@@ -3,7 +3,7 @@ default:
 	ghc --make -optl -w -o bin/vecti -odir bin -hidir bin bin/Lexer.hs src/Tokens.hs src/Main.hs
 	
 
-doc:
+doc:	bin/Lexer.hs
 	rm -rf doc
 	haddock -h --odir=doc src/Lexer.hs src/Tokens.hs
 
