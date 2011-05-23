@@ -1,8 +1,9 @@
+module Main (main) where
 import IO
 import System
 import System.IO 
 import System.Environment
---import Lexer 
+import Lexer
 
 main = do
   args <- getArgs
@@ -21,4 +22,6 @@ main = do
     True -> do
       putStr "At least one parameter expected\nUSAGE: \tvecti file_to_analize\n\tvecti -e scrap_of_code_to_analize\n"
   
-analize s =  putStrLn s
+analize [] = putStrLn "Empty file or input. There were no Tokens nor errors procesed"
+analize s = do
+  putStrLn yylex s
