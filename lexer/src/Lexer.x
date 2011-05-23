@@ -1,9 +1,8 @@
 {
-module Tokens_posn (AlexPosn(..), alexScanTokens, token_posn, yylex) where
+{-module Lexer (AlexPosn(..), alexScanTokens, yylex) where-}
+module Lexer (yylex) where
 import Tokens
 }
-
-
 
 %wrapper "posn"
 
@@ -68,7 +67,6 @@ tokens :-
   \'                                                     { \p s -> TkApos getPos p }
   \&|&                                                   { \p s -> TkAnd getPos p }
   \|\|                                                   { \p s -> TkOr getPos p }
-  \0                                                     { \p s -> TkEOF getPos p }
   
   ($digit+.?$digit*)|($digit*.?$digit+)                  { \p s -> TkNum getPos p s }
   \.                                                     { \p s -> TkPoint getPos p }
@@ -79,78 +77,47 @@ tokens :-
    tipo :: AlexPosn -> String -> Token-}
 
 
+{- La función @getPos@ se encarga de extraer la posición donde se encontró el 
+   /token/ y devolverla en una tupla, para su almacenamiento en el token.
+-}
+getPos :: AlexPosn -> (Int,Int)
+getPos (AlexPn _ f c) = (f,c)
 
-
-
-
-
-
-
-
-
-
-
-
+{-| 
+    Usamos la función @alexScanner@ wn lugar de alexScanToken (proveida por el wrapper
+    Posn) para adaptar la lectura a nuestros requerimientos, y capturar los errores
+    lexicográficos.
+-}
+alexScanner :: String -> ([Token], String)                           
+alexScanner str = go (alexStartPos,'\n',str)
+  where 
+    go inp@(pos,_,str) =
+       case alexScan inp 0 of
+           AlexEOF                -> ([], "")
+           AlexError inp'         -> concat ([], "\nCaracter no esperado '" ++ head str : "' encontrado en linea " ++ show (fst (getPos pos)) ++ ", columna " ++ show (snd (getPos pos)) ++ ".\n") (go (alexMove pos (head str), head str, tail str))
+           AlexSkip  inp' len     -> concat ([], "") (go inp')
+           AlexToken inp' len act -> concat ([act pos (take len str)], "") (go inp')
 
 {-|
-    La función @yylex@ es facilita el uso del analizador lexicográfico
+    La función @yylex@ facilita el uso del analizador lexicográfico en un 
+    programa cliente.
     
     Recibe un @String@, y devuelve una lista de /tokens/ a medida que los va 
     procesando.
 -}
-lexer :: String  -- ^ @String@ @s@ a "tokenizar"
-      -> [Token] -- ^ Lista de /tokens/ del tipo @Token@ o lista de errores. 
+yylex :: String  -- ^ @String@ @s@ a procesar
+      -> [Token] -- ^ Lista de /tokens/ del tipo @Token@ o lista de errores.
 lexer s = do
-     case null ( snd ( alex_icografico s)) of   
-      True  -> fst ( alex_icografico s)          
-      False -> error  (snd ( alex_icografico s)) 
-
-
-
-
-
-
+     case null ( snd ( alexScanner s)) of
+        True  -> fst ( alexScanner s)
+        False -> error  (snd ( alexScanner s))
 
 {-| 
-    La función @alex_icografico@ que reemplaza a la funcion alexScanToken original del wrapper
-    Posn para permitir el manejo de todos los errores que pueden ocurrir durante el análisis 
-    lexicográfico.
+    La función @concatenar@ concatena dos tuplas @A@ y @B@ elemento a elemento.
 -}
-alex_icografico :: String -> ([Token], String)                           
-alex_icografico str = go (alexStartPos,'\n',str)
-  where 
-    go inp@(pos,_,str) = case alexScan inp 0 of
-      AlexEOF                -> ([], "")
-      AlexError inp'         -> concatenar ([], "\nCaracter ilegal '" ++ head str : "' encontrado en la linea " ++ show (fst (procesarPosicion pos)) ++ ", columna " ++ show (snd (procesarPosicion pos)) ++ ".\n") (go (alexMove pos (head str), head str, tail str))
-      AlexSkip  inp' len     -> concatenar ([], "") (go inp')
-      AlexToken inp' len act -> concatenar ([act pos (take len str)], "") (go inp')
- 
-
-{-| 
-    La función @procesarPosicion@ devuelve en forma de tupla la posición de cierto
-    /token/, en el formato (línea,columna). 
--}
-procesarPosicion :: AlexPosn  	-- ^ Tipo de dato definido en el wrapper Posn que se refiere a la
-                      		-- ^ posición de un /token/ en el formato (AlexPn offset línea columna).
-		 -> (Int, Int)  -- ^ Tupla que contiene la línea y columna de cierto /token/.
-procesarPosicion (AlexPn _ f c) = (f,c)
-
-
-{-| 
-    La función @concatenar@ concatena cada una de las listas que conforman la tupla @A@ 
-    cada una de las tuplas que conforman a la tupla @B@. 
--}
-concatenar :: ([a],[b])  -- ^ Tupla @A@ a concatenar
-	   -> ([a],[b])  -- ^ Tupla @B@ a concatenar
-	   -> ([a],[b])	 -- ^ Tupla resultante de la concatenación
-concatenar p u = (fst p ++ fst u, snd p ++ snd u)
-
-{-
-token_posn (Let p) = p
-token_posn (In p) = p
-token_posn (Sym p _) = p
-token_posn (Var p _) = p
-token_posn (Int p _) = p
--}
+concat :: ([x],[y])  -- ^ Tupla @A@ a concatenar
+	   -> ([x],[y])  -- ^ Tupla @B@ a concatenar
+	   -> ([x],[y])	 -- ^ Tupla resultante de la concatenación
+concat a b = (fst a ++ fst b, snd a ++ snd b)
 
 }
