@@ -4,12 +4,13 @@ default:
 	
 
 doc:
-	haddock -h src/Token.hs -o doc bin/Lexer.hs 
+	rm -rf doc
+	haddock -h --odir=doc src/Lexer.hs src/Tokens.hs
 
 clean:
 	rm bin/*
 
 cleanall:
-	rm bin/*
-	rm doc/*
+	rm -f bin/* 2> /dev/null
+	rm -f doc/* 2> /dev/null
 	

@@ -81,11 +81,17 @@ Requerimientos de Software:
 
 3- Compilación
 ================================================================================
-Para compilar el analizador lexicográfico
+Para compilar el analizador lexicográfico se utiliza el Makefile en la carpeta
+principal. Existe un error al momento de generar la documentacion si la carpeta
+doc ya existe, lo cual hace que no se genere la misma.
 
 
 4-Ejecución
 ================================================================================
+El programa no fue completado, aunque la mayoria de las cosas fueron
+implementadas. Falta aún manipular los tokens y convertirlos en salida.
 
 5- Funcionalidad
 ================================================================================
+
+
