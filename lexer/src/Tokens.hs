@@ -97,7 +97,7 @@ data Token =
   
   --Tokens peligrosos
   TkId      (Int,Int) String |
-  TkNum     (Int,Int) Float  |
+  TkNum     (Int,Int) String Float |
   TkStr     (Int,Int) String
   deriving(Eq,Show)
 

@@ -68,7 +68,7 @@ tokens :-
   \&|&                                                   { \p s -> TkAnd (getPos p) }
   \|\|                                                   { \p s -> TkOr (getPos p) }
   
-  ($digit+.?$digit*)|($digit*.?$digit+)                  { \p s -> TkNum (getPos p) s }
+  ($digit+.?$digit*)|($digit*.?$digit+)                  { \p s -> TkNum (getPos p) s (strToFloat s) }
   \.                                                     { \p s -> TkPoint (getPos p) }
   $alpha[$alphanum _]*                                   { \p s -> TkId (getPos p) s }
 
@@ -78,7 +78,7 @@ tokens :-
 -}
 
 
-{- La función @getPos@ se encarga de extraer la posición donde se encontró el 
+{-| La función @getPos@ se encarga de extraer la posición donde se encontró el 
    /token/ y devolverla en una tupla, para su almacenamiento en el token.
 -}
 getPos :: AlexPosn -> (Int,Int)
@@ -114,11 +114,20 @@ yylex s = do
         False -> error  (snd ( alexScanner s))
 
 {-| 
-    La función @concatenar@ concatena dos tuplas @A@ y @B@ elemento a elemento.
+    La función @concat'@ concatena dos tuplas @A@ y @B@ elemento a elemento.
 -}
 concat' :: ([x],[y])  -- ^ Tupla @A@ a concatenar
 	   -> ([x],[y])  -- ^ Tupla @B@ a concatenar
 	   -> ([x],[y])	 -- ^ Tupla resultante de la concatenación
 concat' a b = (fst a ++ fst b, snd a ++ snd b)
 
+{-|
+   La funcion @strToFloat@ convierte el string que hace match con un numero de
+   Vectorinox en cualquier formato, y lo convierte l tipo Float. Util para tener
+   el valor del número, y no su representación.
+ -}
+strToFloat s = do
+           case ('.' `elem` s) of
+                True -> read ("0" ++ s ++ "0") + 0.0
+                False -> read s + 0.0
 }
