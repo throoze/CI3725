@@ -1,6 +1,8 @@
 {
 {-module Lexer (AlexPosn(..), alexScanTokens, yylex) where-}
-module Lexer (yylex) where
+module Lexer (-- * Funciones exportadas.
+              -- *** yylex.
+              yylex) where
 import Tokens
 }
 

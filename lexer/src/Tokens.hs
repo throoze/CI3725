@@ -15,9 +15,6 @@ module Tokens (
   -- * Tipos exportados.
   -- ** Tokens.
   Token (..)
-  
-  -- * Funciones exportadas.
-  -- *** Aqui va la descripción de una función.
   ) where
   
 {- El tipo de datos @Token@ modela los diferentes /Tokens/ que se pueden 
