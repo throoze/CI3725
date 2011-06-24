@@ -1,16 +1,96 @@
-CI3725 - Traductores e Interpretadores - USB
+================================================================================
+        Proyecto: Analizador Lexicográfico para el lenguaje Vectorinox
+================================================================================
+Desarollado por el grupo H06, conformado por: 
+                 Victor De Ponte, 05-38087, rdbvictor19@gmail.com
+                 Isaac López,     07-41120, isaaclpe@gmail.com
 
-===============================================================================
-Proyecto: Vectorinox
-Autores:  Victor De Ponte, 05-38087
-	  Isaac López,     07-41120
-===============================================================================
+para la cátedra de Traductores e Interpretadores de la Universidad Simón Bolívar
+en el trimestre Abril-Julio 2011.
+
+Prof.: Carlos Colmenares
+================================================================================
 
 
-Implementación de un compilador para el lenguaje Vectorinox, definido en el 
-curso.
+Contenido:
+        1- Distribución y estructura de directorios
+        2- Requerimientos del sistema
+        3- Compilación
+        4- Ejecución
+        5- Funcionalidad
 
-Ver la documentación del lenguaje en el archivo definición.pdf
+1- Distribución y estructura de directorios
+================================================================================
 
-El enunciado de cada entrega estará en un archivo .pdf en el subdirectorio co-
-rrespondiente.
+    Se distribuirá un archivo llamado vectiLexer.tar.gz que al descomprimir con-
+tendrá la siguiente estructura de directorios:
+
+GH06
+  |__bin
+  |    |__.
+  |    |__..
+  |__doc
+  |    |__.
+  |    |__..
+  |__Makefile
+  |__README
+  |__src
+       |__.
+       |__..
+       |__Lexer.x
+       |__Tokens.hs
+
+Donde: 
+    - bin: 
+           (Directorio vacío al momento de la distribución)
+           Al terminar el proceso de compilación, contendrá el archivo 'vecti' 
+           junto con todos los archivos necesarios para su ejecución. Una vez 
+           finalizado el proceso de compilación, el contenido de este directorio
+           podrá moverse a cualquier otra ubicación, manteniendo su comporta-
+           miento.
+
+    - doc: 
+           (Directorio vacío al momento de la distribución)
+           Al ejecutar la opción de documentación en el Makefile (ver sección 3,
+           Compilación) esta carpeta contendrá los archivos html con la documen-
+           tación del proyecto.
+
+    - Makefile:
+           Archivo encargado de compilar el proyecto, usando el comando 'make'.
+
+    - README:
+           El archivo que ud. está leyendo.
+
+    - src:
+           Contendrá los archivos fuentes necesarios para compilar el analizador
+           lexicográfico.
+
+2- Requerimientos del sistema
+================================================================================
+
+Requerimientos de Hardware:
+    Cualquier hardware más o menos actualizado está capacitado para compilar y
+    ejecutar el analizador lexicográfico
+
+Requerimientos de Software:
+    El equipo debe disponer del programa del programa 'tar', para descomprimir 
+    el archivo distribuido. También debe estar instalado el programa 'make', 
+    para poder hacer uso del Makefile al momento de compilar. Además, deberá 
+    contar con el compilador para haskell 'ghc'.
+
+
+3- Compilación
+================================================================================
+Para compilar el analizador lexicográfico se utiliza el Makefile en la carpeta
+principal.
+
+
+4-Ejecución
+================================================================================
+El programa no fue completado, aunque la mayoria de las cosas fueron
+implementadas. Falta aún manipular los tokens y convertirlos en salida.
+
+5- Funcionalidad
+================================================================================
+
+
