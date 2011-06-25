@@ -1,5 +1,7 @@
 {
+module Parser (parser) where
 import Tokens
+import Lexer
 }
 
 %name parser
@@ -7,19 +9,14 @@ import Tokens
 %error { parseError }
 
 %token
-    Id   {TkId $$}
-    Numb {TkNum $$}
-    Mat  {TkMat}
-    Vec  {TkVec}
-    Vars {TkVars}
-    ':' {TkColon}
+num   {TkNum  _ $$}
+'+'   {TkPlus a}
+
+
 %%
 
-Pvars : Vars  Id ':' Ptype { Var $2 $4 }
+Suma : num '+' num {  $1, $2, $3 }
 
-Ptype : Numb {Numb $1}
-      | Mat {Mat $1}
-      | Vec {Vec $1}
 
 {
 parseError :: [Token] -> a
