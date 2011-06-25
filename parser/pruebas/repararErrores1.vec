@@ -1,0 +1,46 @@
+#Este archivo tiene la finalidad de aportar distintos casos
+#de prueba relacionados con los errores que los diseñadores
+#de Vectorinox elaboramos al momento de escribir la especificación
+#del lenguaje. Cada caso de prueba contiene la salida que debe generar.
+
+#................................................................
+#                       Caso 1: Comentarios.
+#................................................................
+
+#El lexer no debe reconocer ningún símbolo de esta línea
+
+"Este String # debe de ser # reconocido"
+
+if then else # while type num           #Se deben reconocer los
+                                        #tokens if/then/else más
+                                        #no while/type/num
+
+#................................................................
+#                       Caso 2: Números.
+#................................................................
+
+-1          #Resultado: TkMinus TkNumber(1.0)
+-.1         #Resultado: TkMinus TkNumber(0.1)
+-1.         #Resultado: TkMinus TkNumber(1.0)
+-1.0        #Resultado: TkMinus TkNumber(1.0)
+-       1   #Resultado: TkMinus TkNumber(1.0)
+
+
+#................................................................
+#                       Caso 3: Transpuesta.
+#................................................................
+
+#En todos los ejemplos que siguen se debe reconocer in TkID y
+#un TkTrans, donde TkTrans corresponde al símbolo (^). No es
+#necesario que el token tenga ese nombre
+
+V^
+A^
+B      ^
+
+#................................................................
+#                       Caso 4: String Parte I.
+#................................................................
+
+'Este es un String valido'
+"Al igual que este"

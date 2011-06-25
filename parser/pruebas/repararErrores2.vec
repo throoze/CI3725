@@ -1,0 +1,50 @@
+#Este archivo tiene la finalidad de aportar distintos casos
+#de prueba relacionados con los errores que los diseñadores
+#de Vectorinox elaboramos al momento de escribir la especificación
+#del lenguaje. Cada caso de prueba contiene la salida que debe generar.
+
+#................................................................
+#                       Caso 1: Strings Multilínea.
+#................................................................
+
+#En el siguiente caso, su programa debe reportar un problema
+#de String no Terminado (que es equivalente a reportar que el
+#caracter 'comillas dobles (")' es indebido)
+
+"Este es un string
+multilinea, el cual NO es permitido
+en Vectorinox"
+
+'Este caso es analogo al caso
+anterior, se debe reportar error de string no terminado'
+
+#En el siguiente ejemplo, se debe reportar error de string no
+#terminado pero se debe reconocer los tokens TkNum y TkMat,
+#más no los tokens TkVec y TkTrue
+
+"num mat # vec true
+
+#................................................................
+#                       Caso 2: Strings ASCII
+#................................................................
+
+#Un string sólo contiene caracteres ASCII, todos los casos
+#que siguen deben generar error de caracter indebido
+
+"No se permitirán acentos o eñes en los Strings"
+'Il ne faut pas reconnaître les caractères spéciaux du Français'
+"Não tente escrever a seqüência de caracteres em português"
+
+#................................................................
+#                       Caso 3: Comilla simple
+#................................................................
+
+#Para todos los siguientes casos, se debe generar un error
+#de string no terminado, es decir, NO se debe reconocer el
+#caracter comilla simple (') como un token, ya que ahora
+#el operador para trasponer vectores y matrices es otro
+
+V'
+A'
+M  '
+

@@ -1,0 +1,18 @@
+define prod(x: mat, y:vec) of type num as
+return ((x[1, 1:] * 2) * (y . 3))[1]
+begin
+vars
+c : mat;
+8
+d : vec;
+e, i : num
+a := zeroes(3, 3);
+b := zeroes(, 3);
+i := 0
+while i = 2 do
+begin
+e := prod(c, d);
+write "El resultado es", e
+end
+end
+
