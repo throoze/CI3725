@@ -1,5 +1,5 @@
 {-# OPTIONS_GHC -w #-}
-import Lexer
+import Tokens
 
 -- parser produced by Happy Version 1.18.6
 
@@ -113,22 +113,6 @@ happySeq = happyDontSeq
 
 parseError :: [Token] -> a
 parseError _ = error "Parse error"
-
-data Vars  
-      = TkId Ptype
-      deriving Show
-
-data Numb
-      = TkNum
-      deriving Show 
-
-data Mat
-      = TkMat
-      deriving Show 
-
-data Vec
-      = TkVec
-      deriving Show
 {-# LINE 1 "templates/GenericTemplate.hs" #-}
 {-# LINE 1 "templates/GenericTemplate.hs" #-}
 {-# LINE 1 "<built-in>" #-}
