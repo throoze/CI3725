@@ -10,3 +10,4 @@
 *.out
 hola
 *Parser.hs
+*gramaticas.hs
