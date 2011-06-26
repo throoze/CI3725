@@ -33,7 +33,7 @@ false      {TkFalse _}
 foreach    {TkForeach _}
 in         {TkIn _}
 ','        {TkComma _}
-':'        {TkSColon _}
+';'        {TkSColon _}
 '{'        {TkLBrace _}
 '}'        {TkRBrace _}
 '('        {TkLBkt _}
@@ -63,7 +63,7 @@ in         {TkIn _}
 ':='       {TkAsign _}
 id         {TkId _ $$}
 numb       {TkNum _ $$}
-str        {TkStr _ $$}
+string     {TkStr _ $$}
 
 %%
 
@@ -115,7 +115,7 @@ MatrixSector           : Expression '[' Coordinate':' Coordinate ',' Coordinate 
 Coordinate             : numb                                                                            {  }
                        | {- empty -}                                                                     { [] }
 
-Block                  : begin VarDeclaration StatementList End                                          {  }
+Block                  : begin VarDeclaration StatementList end                                          {  }
 
 VarDeclaration         : vars VarDeclarationList                                                         {  }
                        | {- empty -}                                                                     { [] }
@@ -200,7 +200,6 @@ RowsList               :  RowsList ExpressionList ';'                           
 Operation              : Expression '+' Term                                                             {  }
                        | Expression '-' Term                                                             {  }
                        | Term                                                                            {  }
-                       | FunctionCall                                                                    {  }
 
 Term                   : Term '*' Factor                                                                 {  }
                        | Term '/' Factor                                                                 {  }
