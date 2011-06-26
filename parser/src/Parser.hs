@@ -1,87 +1,64 @@
 {-# OPTIONS_GHC -w #-}
+module Parser (parser) where
 import Tokens
 
 -- parser produced by Happy Version 1.18.6
 
-data HappyAbsSyn t4 t5
+data HappyAbsSyn t4
 	= HappyTerminal (Token)
 	| HappyErrorToken Int
 	| HappyAbsSyn4 t4
-	| HappyAbsSyn5 t5
 
-action_0 (10) = happyShift action_2
-action_0 (4) = happyGoto action_3
+action_0 (5) = happyShift action_3
+action_0 (4) = happyGoto action_4
 action_0 _ = happyFail
 
-action_1 (10) = happyShift action_2
+action_1 (5) = happyShift action_3
+action_1 (4) = happyGoto action_2
 action_1 _ = happyFail
 
-action_2 (6) = happyShift action_4
+action_2 (6) = happyShift action_5
 action_2 _ = happyFail
 
-action_3 (12) = happyAccept
-action_3 _ = happyFail
+action_3 _ = happyReduce_2
 
-action_4 (11) = happyShift action_5
+action_4 (6) = happyShift action_5
+action_4 (10) = happyAccept
 action_4 _ = happyFail
 
-action_5 (7) = happyShift action_7
-action_5 (8) = happyShift action_8
-action_5 (9) = happyShift action_9
-action_5 (5) = happyGoto action_6
+action_5 (5) = happyShift action_3
+action_5 (4) = happyGoto action_6
 action_5 _ = happyFail
 
 action_6 _ = happyReduce_1
 
-action_7 _ = happyReduce_2
+happyReduce_1 = happySpecReduce_3  4 happyReduction_1
+happyReduction_1 (HappyAbsSyn4  happy_var_3)
+	_
+	(HappyAbsSyn4  happy_var_1)
+	 =  HappyAbsSyn4
+		 (Suma happy_var_1 happy_var_3
+	)
+happyReduction_1 _ _ _  = notHappyAtAll 
 
-action_8 _ = happyReduce_3
-
-action_9 _ = happyReduce_4
-
-happyReduce_1 = happyReduce 4 4 happyReduction_1
-happyReduction_1 ((HappyAbsSyn5  happy_var_4) `HappyStk`
-	_ `HappyStk`
-	(HappyTerminal (TkId happy_var_2)) `HappyStk`
-	_ `HappyStk`
-	happyRest)
-	 = HappyAbsSyn4
-		 (Var happy_var_2 happy_var_4
-	) `HappyStk` happyRest
-
-happyReduce_2 = happySpecReduce_1  5 happyReduction_2
-happyReduction_2 (HappyTerminal (TkNum happy_var_1))
-	 =  HappyAbsSyn5
-		 (Numb happy_var_1
+happyReduce_2 = happySpecReduce_1  4 happyReduction_2
+happyReduction_2 (HappyTerminal (TkNum  _ happy_var_1))
+	 =  HappyAbsSyn4
+		 (Numero  happy_var_1
 	)
 happyReduction_2 _  = notHappyAtAll 
 
-happyReduce_3 = happySpecReduce_1  5 happyReduction_3
-happyReduction_3 (HappyTerminal happy_var_1)
-	 =  HappyAbsSyn5
-		 (Mat happy_var_1
-	)
-happyReduction_3 _  = notHappyAtAll 
-
-happyReduce_4 = happySpecReduce_1  5 happyReduction_4
-happyReduction_4 (HappyTerminal happy_var_1)
-	 =  HappyAbsSyn5
-		 (Vec happy_var_1
-	)
-happyReduction_4 _  = notHappyAtAll 
-
 happyNewToken action sts stk [] =
-	action 12 12 notHappyAtAll (HappyState action) sts stk []
+	action 10 10 notHappyAtAll (HappyState action) sts stk []
 
 happyNewToken action sts stk (tk:tks) =
 	let cont i = action i i tk (HappyState action) sts stk tks in
 	case tk of {
-	TkId happy_dollar_dollar -> cont 6;
-	TkNum happy_dollar_dollar -> cont 7;
-	TkMat -> cont 8;
-	TkVec -> cont 9;
-	TkVars -> cont 10;
-	TkColon -> cont 11;
+	TkNum  _ happy_dollar_dollar -> cont 5;
+	TkPlus _ -> cont 6;
+	TkMinus _ -> cont 7;
+	TkLBkt _ -> cont 8;
+	TkRBkt _ -> cont 9;
 	_ -> happyError' (tk:tks)
 	}
 
@@ -103,7 +80,7 @@ happyThen1 m k tks = (>>=) m (\a -> k a tks)
 happyReturn1 :: () => a -> b -> HappyIdentity a
 happyReturn1 = \a tks -> (return) a
 happyError' :: () => [(Token)] -> HappyIdentity a
-happyError' = HappyIdentity . parseError
+happyError' = HappyIdentity . parserError
 
 parser tks = happyRunIdentity happySomeParser where
   happySomeParser = happyThen (happyParse action_0 tks) (\x -> case x of {HappyAbsSyn4 z -> happyReturn z; _other -> notHappyAtAll })
@@ -111,8 +88,15 @@ parser tks = happyRunIdentity happySomeParser where
 happySeq = happyDontSeq
 
 
-parseError :: [Token] -> a
-parseError _ = error "Parse error"
+parserError :: [Token] -> a
+parserError (t:ts) = error $ 
+  "Error de sintaxis en el Token " ++ (show t) ++ "\n" ++
+  "Seguido de: " ++ (unlines $ map show $ take 3 ts)
+  
+
+data ExpresionNum = Suma ExpresionNum ExpresionNum
+  | Numero  String
+  deriving (Eq,Show)
 {-# LINE 1 "templates/GenericTemplate.hs" #-}
 {-# LINE 1 "templates/GenericTemplate.hs" #-}
 {-# LINE 1 "<built-in>" #-}

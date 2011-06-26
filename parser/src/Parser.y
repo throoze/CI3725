@@ -1,26 +1,35 @@
+
+
 {
 module Parser (parser) where
 import Tokens
-import Lexer
 }
 
 %name parser
 %tokentype { Token }
-%error { parseError }
+%error { parserError }
 
 %token
-num   {TkNum  _ $$}
-'+'   {TkPlus a}
+num   {TkNum  _ $$ }
+'+'   {TkPlus _}
+'-'   {TkMinus _}
+'('   {TkLBkt _}
+')'   {TkRBkt _}
 
-
+%left '+'
 %%
 
-Suma : num '+' num {  $1, $2, $3 }
-
-
+Suma : Suma '+' Suma {  Suma $1 $3 }
+| num { Numero  $1 }
+ 
 {
-parseError :: [Token] -> a
-parseError _ = error "Parse error"
+parserError :: [Token] -> a
+parserError (t:ts) = error $ 
+  "Error de sintaxis en el Token " ++ (show t) ++ "\n" ++
+  "Seguido de: " ++ (unlines $ map show $ take 3 ts)
+  
 
-
+data ExpresionNum = Suma ExpresionNum ExpresionNum
+  | Numero  String
+  deriving (Eq,Show)
 }

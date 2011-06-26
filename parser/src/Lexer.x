@@ -69,7 +69,7 @@ tokens :-
   \$                                                     { \p s -> TkDollar (getPos p) }
   \@                                                     { \p s -> TkAt (getPos p) }
   \^                                                     { \p s -> TkTrans (getPos p) }
-  \&|&                                                   { \p s -> TkAnd (getPos p) }
+  \&\&                                                   { \p s -> TkAnd (getPos p) }
   \|\|                                                   { \p s -> TkOr (getPos p) }
   
   ($digit+\.?$digit*)|($digit*\.?$digit+)                { \p s -> TkNum (getPos p) s }
