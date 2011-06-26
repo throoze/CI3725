@@ -1,6 +1,6 @@
 default: 
 	alex src/Lexer.x -o src/Lexer.hs
-	happy src/Parser.y -o src/Parser.hs
+	happy src/Parser.y -o src/Parser.hs -iprueba
 	ghc --make -optl -w -o bin/vecti -odir bin -hidir bin src/Lexer.hs src/Parser.hs src/Tokens.hs src/Main.hs
 	
 

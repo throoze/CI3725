@@ -1,29 +1,35 @@
+
+
 {
+module Parser (parser) where
 import Tokens
 }
 
 %name parser
 %tokentype { Token }
-%error { parseError }
+%error { parserError }
 
 %token
-    Id   {TkId $$}
-    Numb {TkNum $$}
-    Mat  {TkMat}
-    Vec  {TkVec}
-    Vars {TkVars}
-    ':' {TkColon}
+num   {TkNum  _ $$ }
+'+'   {TkPlus _}
+'-'   {TkMinus _}
+'('   {TkLBkt _}
+')'   {TkRBkt _}
+
+%left '+'
 %%
 
-Pvars : Vars  Id ':' Ptype { Var $2 $4 }
-
-Ptype : Numb {Numb $1}
-      | Mat {Mat $1}
-      | Vec {Vec $1}
-
+Suma : Suma '+' Suma {  Suma $1 $3 }
+| num { Numero  $1 }
+ 
 {
-parseError :: [Token] -> a
-parseError _ = error "Parse error"
+parserError :: [Token] -> a
+parserError (t:ts) = error $ 
+  "Error de sintaxis en el Token " ++ (show t) ++ "\n" ++
+  "Seguido de: " ++ (unlines $ map show $ take 3 ts)
+  
 
-
+data ExpresionNum = Suma ExpresionNum ExpresionNum
+  | Numero  String
+  deriving (Eq,Show)
 }
