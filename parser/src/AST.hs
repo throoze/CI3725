@@ -17,10 +17,10 @@ module AST (
 data POG = Vectorinox [Routine] Statement
          deriving (Show, Eq) 
                   
-data Routine = Token [Uni] Type Statement
+data Rout = Routine  Token [VARS] Type Statement
              deriving (Show, Eq)
                       
-data VARS = Uni id Type
+data VARS = Uni Token Type
           deriving (Show, Eq)
                    
 data Type = Numb Token
@@ -28,13 +28,13 @@ data Type = Numb Token
           | Mat Token
           deriving (Show, Eq)
                    
-data Statement = MBoolean BooleanExp Statement Statement
-               | BooleanS BooleanExp Statement
-               | UBoolean BooleanExp Statement Statement
+data Statement = MBoolean Statement Statement Statement
+               | BooleanS Statement Statement
+               | UBoolean Statement Statement Statement
                | Assign Assignable Expression
-               | Block [Declaration] [Statement]
-               | While BooleanExp Statement
-               | FE id Expression Statement
+               | Block [Dec] [Statement]
+               | While Statement Statement
+               | FE Token Expression Statement
                | READ Assignable
                | WRITE  Printable
                deriving (Show, Eq)
@@ -55,10 +55,20 @@ data Expression = PL Expression Expression
                 | FuncVR Function Maybe Expression Maybe Expression
                 | FuncMR Function Maybe Expression Maybe Expression Maybe Expression Maybe Expression
                 | FuncVP Function Expression
-                | FuncVR Function Expression Expression
+                | FuncMP Function Expression Expression
                 | BRE Expression
                 | TRP Expression
                 | POW Expression Expression
+                | Bc Expression
+                | Neg Expression
+                | AND Expression Expression
+                | OR Expression
+                | LT Expression Expression
+                | GT Expression Expression
+                | LE Expression Expression
+                | GE Expression Expression
+                | Eq Expression Expression
+                | NEq Expression Expression
                 deriving (Show, Eq)
                          
 data Function = Func [Expression]
@@ -68,7 +78,7 @@ data Function = Func [Expression]
               | Eye Expression
               deriving (Show, Eq)
                        
-data Matrix = Mat [Expression]
+data Matrix = Matr [Expression]
             | EmptyMat
             deriving (Show, Eq)
                      
@@ -86,5 +96,5 @@ data Assignable = AssignableRV Token Expression Expression
                 | AssignableMV Token Expression Expression
                 deriving (Show, Eq)
                          
-data Dec = Declaration  [id] Type
+data Dec = Declaration  [Token] Type
          deriving (Show, Eq)
