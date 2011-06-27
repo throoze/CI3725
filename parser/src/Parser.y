@@ -68,21 +68,38 @@ id         {TkId _ $$}
 numb       {TkNum _ $$}
 str        {TkStr _ $$}
 
-%left ',' 
+
+%left ','
+%left ';'
+%right '!'
+%left '^'
+%left '**'
+%left '$' '@'
+%left '*' '/' '.' '%' 
+%left '||'
+%left '&&'
+%left '+' '-'
+%nonassoc '=' '!='
+%nonassoc '<' '>' '<=' '>=' 
+%nonassoc '(' ')'
+%nonassoc '[' ']'
+%nonassoc '{' '}'
 %%
 
 Vectorinox             : SubRoutineDef Statement                                                         {  }
 
-SubRoutineDef          : define id '(' FunVarList ')' of type Type as Statement                          {  }
-                       | SubRoutineDef SubRoutineDef                                                     {  }
+SubRoutineDef          : SubRoutineDef Routine                                                           {  }
+                       | {- empty -}                                                                     {  }
+ 
+Routine                : define id '(' FunVarList ')' of type Type as Statement                          {  }
 
 
-FunVarList             : id ':' Type                                                                     { Uni $1 $3 }
-                       | FunVarList ',' FunVarList                                                       { Multi $1 $3 }
+FunVarList             : id ':' Type                                                                     {  }
+                       | FunVarList ',' FunVarList                                                       {  }
 
-Type                   : num                                                                             { Numb $1 }
-                       | vec                                                                             { Vec $1 }
-                       | mat                                                                             { Mat $1 }
+Type                   : num                                                                             {  }
+                       | vec                                                                             { }
+                       | mat                                                                             {  }
  
 Statement              : Matched                                                                         {  }
                        | Unmatched                                                                       {  }
@@ -94,36 +111,29 @@ Matched                : if BooleanExp then Matched else Matched                
                        | Foreach                                                                         {  }
                        | Read                                                                            {  }
                        | Write                                                                           {  }
-                       | return                                                                          {   }
+                       | return                                                                          {  }
 
 Unmatched              : if BooleanExp then Statement                                                    {  }
                        | if BooleanExp then Matched else Unmatched                                       {  }
 
 Assignment             : Assignable ':=' Expression                                                      {  }
 
-Assignable             : id                                                                              {  }
-                       | MatrixElement                                                                   {  }
-                       | Matrix                                                                    {  }
-
-MatrixElement          : Expression '[' Expression ']'           { }
-                       | Expression '[' Expression ',' Expression ']'            { }
-                       | id '[' Expression ']'                      { }
+Assignable             : id                                                                              {  }                                                                      | Matrix                                                                          {  }
 
 
+Block                  : begin VarDeclarationBlock StatementList end                                     {  }
 
-Block                  : begin VarDeclarationBlock StatementList end                                          {  }
+VarDeclarationBlock    : vars VarDeclarationList                                                         {  }
+                       | {- empty -}                                                                     {  }
 
-VarDeclarationBlock    : vars VarDeclarationList                                              { }
-                       | {- empty -}                                                         { [] }
+VarDeclarationList     : VarDeclarationList ';' VarDeclarationList ':' Type                              {  }
+                       | VarList ':' Type                                                                {  }
 
-VarDeclarationList     : VarDeclarationList ';' VarDeclarationList ':' Type                  { }
-                       | VarList ':' Type                                                   { }
+VarList                : VarList ',' id                                                                  {  }
+                       | id                                                                              {  }
 
-VarList                : VarList ',' id                                         { }
-                       | id                                                      { }
-
-StatementList          : StatementList ';' Statement                                                        {  }
-                       | Statement                                                           { }
+StatementList          : StatementList ';' Statement                                                     {  }
+                       | Statement                                                                       {  }
 
 
 While                  : while BooleanExp do Statement                                                   {  }
@@ -134,58 +144,43 @@ Read                   : read Assignable                                        
 
 Write                  : write ExpressionList                                                            {  }
 
-ExpressionList         : ExpressionList ',' Expression                                                      {  }
+ExpressionList         : ExpressionList ',' Expression                                                   {  }
                        | Expression                                                                      {  }
 
-Expression             : BooleanExp                                                                      {  }
-                       | NonBooleanExp                                                                   {  }
 
-BooleanExp             : ShortCircuitAnd                                                                 {  }
-                       | ShortCircuitOr                                                                  {  }
-                       | Negation                                                                        {  }
-                       | Comparison                                                                      {  }
-                       | true                                                                            {  }
+BooleanExp             : true                                                                            {  }
                        | false                                                                           {  }
+                       | '(' BooleanExp ')'                                                              {  }
+                       | '!' BooleanExp                                                                  {  }
+                       | BooleanExp '&&' BooleanExp                                                      {  }
+                       | BooleanExp '||' BooleanExp                                                      {  }
+                       | Expression '<' Expression                                                       {  }
+                       | Expression '>' Expression                                                       {  }
+                       | Expression '<=' Expression                                                      {  }
+                       | Expression '>=' Expression                                                      {  }
+                       | Expression '=' Expression                                                       {  }
+                       | Expression '!=' Expression                                                      {  }  
 
-ShortCircuitAnd        : BooleanExp '&&' BooleanExp                                                      {  }
-                       
-ShortCircuitOr         : BooleanExp '||' BooleanExp                                                      {  }
-
-Negation               : '!' BooleanExp                                                                  {  }
-
-Comparison             : LessThan                                                                        {  }
-                       | GreaterThan                                                                     {  }
-                       | LessEqThan                                                                      {  }
-                       | GreaterEqThan                                                                   {  }
-                       | Equal                                                                           {  }
-                       | Unequal                                                                         {  }
-
-LessThan               : Expression '<' Expression                                                       {  }
-
-GreaterThan            : Expression '>' Expression                                                       {  }
-
-LessEqThan             : Expression '<=' Expression                                                      {  }
-
-GreaterEqThan          : Expression '>=' Expression                                                      {  }
-
-Equal                  : Expression '=' Expression                                                       {  }
-
-Unequal                : Expression '!=' Expression                                                      {  }
-
-NonBooleanExp          : str                                                                          {  }
+Expression             : str                                                                             {  }
                        | Operation                                                                       {  }
                        | Assignable                                                                      {  }
 
 Matrix                 : '{' RowList '}'                                                                 {  }
-                       | '{' '}'                                                                         { }
-                       | Expression '[' Expression ':' Expression ']'                                    {  }
-                       | Expression '[' Expression ':' Expression ',' Expression ':' Expression ']'      {  }
+                       | '{' '}'                                                                         {  }
+                       | Matrix '[' Expression ':' Expression ']'                                        {  }
+                       | Matrix '[' Expression ':' Expression ',' Expression ':' Expression ']'          {  }
+                       | Matrix '*' Expression                                                           {  }
+                       | Matrix '.' Expression                                                           {  }
+                       | zeroes '(' Expression ')'                                                       {  }
+                       | zeroes '(' Expression ',' Expression ')'                                        {  }
+                       | range '(' Expression ')'                                                        {  }
+                       | eye '(' Expression ')'                                                          {  } 
 
-RowList                :  RowList ';' ExpressionList                                                        {  }
-                       | ExpressionList                                                                      { }
+RowList                :  RowList ';' ExpressionList                                                     {  }
+                       | ExpressionList                                                                  {  }
 
-Operation              : Expression '+' Term                                                             {  }
-                       | Expression '-' Term                                                             {  }
+Operation              : Operation '+' Term                                                              {  }
+                       | Operation '-' Term                                                              {  }
                        | '(' Operation ')'                                                               {  }
                        | '-' Operation                                                                   {  }
                        | Term                                                                            {  }
@@ -205,10 +200,12 @@ Atom                   : '$' Matrix                                             
                        | '^' Matrix                                                                      {  }
                        | id '(' ExpressionList ')'                                                       {  }
                        | '(' Expression ')'                                                              {  }
-                       | Matrix                                                                          {  }
                        | Power                                                                           {  }
                        | numb                                                                            {  }
                        | id                                                                              {  }
+                       | Matrix '[' Expression ']'                                                       {  }
+                       | Matrix '[' Expression ',' Expression ']'                                        {  }
+                       | id '[' Expression ']'                                                           {  }
 
 Power                  : Expression '**'  Expression                                                     {  }
 
