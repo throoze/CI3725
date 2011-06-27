@@ -71,6 +71,11 @@ str        {TkStr _ $$}
 %left ',' 
 %%
 
+Vectorinox             : SubRoutineDef Statement                                                         {  }
+
+SubRoutineDef          : define id '(' FunVarList ')' of type Type as Statement                          {  }
+                       | SubRoutineDef SubRoutineDef                                                     {  }
+
 
 FunVarList             : id ':' Type                                                                     { Uni $1 $3 }
                        | FunVarList ',' FunVarList                                                       { Multi $1 $3 }
@@ -79,6 +84,133 @@ Type                   : num                                                    
                        | vec                                                                             { Vec $1 }
                        | mat                                                                             { Mat $1 }
  
+Statement              : Matched                                                                         {  }
+                       | Unmatched                                                                       {  }
+
+Matched                : if BooleanExp then Matched else Matched                                         {  }
+                       | Assignment                                                                      {  }
+                       | Block                                                                           {  }
+                       | While                                                                           {  }
+                       | Foreach                                                                         {  }
+                       | Read                                                                            {  }
+                       | Write                                                                           {  }
+                       | return                                                                          {   }
+
+Unmatched              : if BooleanExp then Statement                                                    {  }
+                       | if BooleanExp then Matched else Unmatched                                       {  }
+
+Assignment             : Assignable ':=' Expression                                                      {  }
+
+Assignable             : id                                                                              {  }
+                       | MatrixElement                                                                   {  }
+                       | Matrix                                                                    {  }
+
+MatrixElement          : Expression '[' Expression ']'           { }
+                       | Expression '[' Expression ',' Expression ']'            { }
+                       | id '[' Expression ']'                      { }
+
+
+
+Block                  : begin VarDeclarationBlock StatementList end                                          {  }
+
+VarDeclarationBlock    : vars VarDeclarationList                                              { }
+                       | {- empty -}                                                         { [] }
+
+VarDeclarationList     : VarDeclarationList ';' VarDeclarationList ':' Type                  { }
+                       | VarList ':' Type                                                   { }
+
+VarList                : VarList ',' id                                         { }
+                       | id                                                      { }
+
+StatementList          : StatementList ';' Statement                                                        {  }
+                       | Statement                                                           { }
+
+
+While                  : while BooleanExp do Statement                                                   {  }
+
+Foreach                : foreach id in Expression do Statement                                           {  }
+
+Read                   : read Assignable                                                                 {  }
+
+Write                  : write ExpressionList                                                            {  }
+
+ExpressionList         : ExpressionList ',' Expression                                                      {  }
+                       | Expression                                                                      {  }
+
+Expression             : BooleanExp                                                                      {  }
+                       | NonBooleanExp                                                                   {  }
+
+BooleanExp             : ShortCircuitAnd                                                                 {  }
+                       | ShortCircuitOr                                                                  {  }
+                       | Negation                                                                        {  }
+                       | Comparison                                                                      {  }
+                       | true                                                                            {  }
+                       | false                                                                           {  }
+
+ShortCircuitAnd        : BooleanExp '&&' BooleanExp                                                      {  }
+                       
+ShortCircuitOr         : BooleanExp '||' BooleanExp                                                      {  }
+
+Negation               : '!' BooleanExp                                                                  {  }
+
+Comparison             : LessThan                                                                        {  }
+                       | GreaterThan                                                                     {  }
+                       | LessEqThan                                                                      {  }
+                       | GreaterEqThan                                                                   {  }
+                       | Equal                                                                           {  }
+                       | Unequal                                                                         {  }
+
+LessThan               : Expression '<' Expression                                                       {  }
+
+GreaterThan            : Expression '>' Expression                                                       {  }
+
+LessEqThan             : Expression '<=' Expression                                                      {  }
+
+GreaterEqThan          : Expression '>=' Expression                                                      {  }
+
+Equal                  : Expression '=' Expression                                                       {  }
+
+Unequal                : Expression '!=' Expression                                                      {  }
+
+NonBooleanExp          : str                                                                          {  }
+                       | Operation                                                                       {  }
+                       | Assignable                                                                      {  }
+
+Matrix                 : '{' RowList '}'                                                                 {  }
+                       | '{' '}'                                                                         { }
+                       | Expression '[' Expression ':' Expression ']'                                    {  }
+                       | Expression '[' Expression ':' Expression ',' Expression ':' Expression ']'      {  }
+
+RowList                :  RowList ';' ExpressionList                                                        {  }
+                       | ExpressionList                                                                      { }
+
+Operation              : Expression '+' Term                                                             {  }
+                       | Expression '-' Term                                                             {  }
+                       | '(' Operation ')'                                                               {  }
+                       | '-' Operation                                                                   {  }
+                       | Term                                                                            {  }
+
+Term                   : Term '*' Factor                                                                 {  }
+                       | Term '/' Factor                                                                 {  }
+                       | Term '%' Factor                                                                 {  }
+                       | '(' Term ')'                                                                    {  }
+                       | Factor                                                                          {  }
+
+
+Factor                 : '(' '-' Atom ')'                                                                {  }
+                       | Atom                                                                            {  }
+
+Atom                   : '$' Matrix                                                                      {  }
+                       | '@' Matrix                                                                      {  }
+                       | '^' Matrix                                                                      {  }
+                       | id '(' ExpressionList ')'                                                       {  }
+                       | '(' Expression ')'                                                              {  }
+                       | Matrix                                                                          {  }
+                       | Power                                                                           {  }
+                       | numb                                                                            {  }
+                       | id                                                                              {  }
+
+Power                  : Expression '**'  Expression                                                     {  }
 
 {
 parserError :: [Token] -> a
