@@ -118,6 +118,10 @@ Unmatched              : if BooleanExp then Statement                           
 Assignment             : Assignable ':=' Expression                                                      {  }
 
 Assignable             : id                                                                              {  }
+                       | id '[' NullableExp ':' NullableExp ']'                                          {  }
+                       | id '[' NullableExp ':' NullableExp ',' NullableExp ':' NullableExp ']'          {  }
+                       | id '[' Expression ']'                                                           {  }
+                       | id '[' Expression ',' Expression ']'                                            {  }
                        | MatrixSector                                                                    {  }
                        | MatrixElement                                                                   {  }
 
@@ -186,24 +190,32 @@ Expression             : Expression '+' Expression                              
                        | Expression '.' Expression                                                       {  }
                        | '$' Expression                                                                  {  }
                        | '@' Expression                                                                  {  }
-                       | id '(' ExpressionList ')'                                                       {  }
+                       | Function                                                                        {  }
+                       | Function '[' NullableExp ':' NullableExp ']'                                    {  }
+                       | Function '[' NullableExp ':' NullableExp ',' NullableExp ':' NullableExp ']'    {  }
+                       | Function '[' Expression ']'                                                     {  }
+                       | Function '[' Expression ',' Expression ']'                                      {  }
                        | '(' Expression ')'                                                              {  }
                        | numb                                                                            {  }
                        | Assignable                                                                      {  }
-                       | '{' RowList '}'                                                                 {  }
-                       | '{' '}'                                                                         {  }
+                       | '^' Expression                                                                  {  }
+                       | Expression '**'  Expression                                                     {  }
+                       | Matrix                                                                          {  }
+
+Function               : id '(' ExpressionList ')'                                                       {  }
                        | zeroes '(' Expression ')'                                                       {  }
                        | zeroes '(' Expression ',' Expression ')'                                        {  }
                        | range '(' Expression ')'                                                        {  }
                        | eye '(' Expression ')'                                                          {  }
-                       | '^' Expression                                                                  {  }
-                       | Expression '**'  Expression                                                     {  }                   
+
+Matrix                 : '{' RowList '}'                                                                 {  }
+                       | '{' '}'                                                                         {  }
                                               
-MatrixSector           : Expression '[' NullableExp ':' NullableExp ']'                                  {  }
-                       | Expression '[' NullableExp ':' NullableExp ',' NullableExp ':' NullableExp ']'  {  }
+MatrixSector           : Matrix '[' NullableExp ':' NullableExp ']'                                      {  }
+                       | Matrix '[' NullableExp ':' NullableExp ',' NullableExp ':' NullableExp ']'      {  }
                        
-MatrixElement          : Expression '[' Expression ']'                                                   {  }
-                       | Expression '[' Expression ',' Expression ']'                                    {  }
+MatrixElement          : Matrix '[' Expression ']'                                                       {  }
+                       | Matrix '[' Expression ',' Expression ']'                                        {  }
 
 
 {
